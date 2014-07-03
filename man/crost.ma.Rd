@@ -41,16 +41,17 @@ crost.ma(data,h=10,w=NULL,nop=c(2,1),type=c("croston","sba","sbj"),
 }
 \references{
 Optimisation cost functions described in:
-N. Kourentzes, 2014, International Journal of Production Economics. \url{http://dx.doi.org/10.1016/j.ijpe.2014.06.007}.
+N. Kourentzes, 2014, On intermittent demand model optimisation and selection, International Journal of Production Economics, 156: 180-190. \url{http://dx.doi.org/10.1016/j.ijpe.2014.06.007}.
+
 \url{http://kourentzes.com/forecasting/2014/06/11/on-intermittent-demand-model-optimisation-and-selection/}
 }
 \author{
 Nikolaos Kourentzes
 }
 \seealso{
-\code{\link{tsb}}, \code{\link{crost}}.
+\code{\link{crost}}, \code{\link{tsb}}, \code{\link{sexsm}}.
 }
 \examples{
-crost.ma(data,outplot=TRUE)
+crost.ma(ts.data1,outplot=TRUE)
 }
 \keyword{ ~croston ~crost.ma ~moving average }

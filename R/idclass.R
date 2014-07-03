@@ -21,7 +21,7 @@ idclass <- function(data,type=c("PKa","SBC","KHa","KH","PK"),a.in=NULL,
 #   outplot       Plot results of categorisation:
 #                   "summary" - simlified plot that reports number of series
 #                               in each class and cut-off points;
-#                   "detail"  - scatterplot between average interdemand 
+#                   "detail"  - scatterplot between average inter-demand 
 #                               interval (p) and squared coefficient of
 #                               variation of non-zero demand (CV^2). Series
 #                               that are categorised for SBA or SES are plotted
@@ -39,6 +39,8 @@ idclass <- function(data,type=c("PKa","SBC","KHa","KH","PK"),a.in=NULL,
 #   idx.sba       Index of series that are categorised under SBA.
 #   idx.ses       Index of series that are categorised under SES. Provided only 
 #                 for "PK" and "PKa" types.
+#   cv2           Coefficient of variation squared of non-zero demand.
+#   p             Inter-demand interval. 
 #   summary       Summary of number of series under each category. 
 #
 # Example:
@@ -264,6 +266,6 @@ if (outplot=="summary"){
 }
 
 return(list(idx.croston=idx.croston,idx.sba=idx.sba,idx.ses=idx.ses,
-            summary=summary))
+            cv2=v,p=p,summary=summary))
 
 }

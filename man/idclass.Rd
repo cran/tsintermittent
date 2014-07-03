@@ -31,6 +31,8 @@ idclass(data,type=c("PKa","SBC","KHa","KH","PK"),a.in=NULL,
 \item{idx.croston}{Index of series that are categorised under Croston.}
 \item{idx.sba}{Index of series that are categorised under SBA.}
 \item{idx.ses}{Index of series that are categorised under SES. Provided only for "PK" and "PKa" types.}
+\item{cv2}{Coefficient of variation squared of non-zero demand.}
+\item{p}{Inter-demand interval.}
 \item{summary}{Summary of number of series under each category.}
 }
 \references{
@@ -38,8 +40,9 @@ Classification schemes described in:
 F. Petropoulos and N. Kourentzes, 2014, Journal of Operational Research Society. \url{http://dx.doi.org/10.1057/jors.2014.62}.
 \url{http://kourentzes.com/forecasting/2014/05/13/forecast-combinations-for-intermittent-demand/}
 
-Method optimisation described in:
-N. Kourentzes, 2014, International Journal of Production Economics. \url{http://dx.doi.org/10.1016/j.ijpe.2014.06.007}.
+Optimisation of the methods described in:
+N. Kourentzes, 2014, On intermittent demand model optimisation and selection, International Journal of Production Economics, 156: 180-190. \url{http://dx.doi.org/10.1016/j.ijpe.2014.06.007}.
+
 \url{http://kourentzes.com/forecasting/2014/06/11/on-intermittent-demand-model-optimisation-and-selection/}
 }
 \author{

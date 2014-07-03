@@ -43,18 +43,19 @@ crost <- function(data,h=10,w=NULL,init=c("mean","naive"),nop=c(2,1),
 #   initial     Initialisation values for demand and interval smoothing.
 #
 # Example:
-#   crost(data,outplot=TRUE)
+#   crost(ts.data1,outplot=TRUE)
 #
 # Notes:
 # Optimisation of the methods described in:
-# N. Kourentzes, 2014, International Journal of Production Economics. 
+# N. Kourentzes, 2014, On intermittent demand model optimisation and selection, 
+# International Journal of Production Economics, 156: 180-190. 
 # http://dx.doi.org/10.1016/j.ijpe.2014.06.007
 # http://kourentzes.com/forecasting/2014/06/11/on-intermittent-demand-model-optimisation-and-selection/
 #
 # Nikolaos Kourentzes, 2014 <nikolaos@kourentzes.com>
   
   # Defaults
-  type <- type[1]
+  type <- tolower(type[1])
   cost <- cost[1]
   init.opt <- init.opt[1]
   outplot <- outplot[1]
@@ -101,7 +102,7 @@ crost <- function(data,h=10,w=NULL,init=c("mean","naive"),nop=c(2,1),
   # Assign initial values and parameters
   if (opt.on == FALSE){
     if (init[1]<0){
-      stop("Initial demand cannot be a negatice number.")
+      stop("Initial demand cannot be a negative number.")
     } else {
       zfit[1] <- init[1]
     }
@@ -173,7 +174,7 @@ crost <- function(data,h=10,w=NULL,init=c("mean","naive"),nop=c(2,1),
 }
 
 #-------------------------------------------------
-crost.opt <- function(data,type=c("croston","sba","sbj"),cost=c("MAR","MSR","MAE","MSE"),
+crost.opt <- function(data,type=c("croston","sba","sbj"),cost=c("mar","msr","mae","mse"),
                       nop=c(2,1),init,init.opt=c(TRUE,FALSE)){
 # Optimisation function for Croston and variants
   

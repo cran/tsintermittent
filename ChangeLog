@@ -1,2 +1,8 @@
+Version 1.1
+  * Added SES function (sexsm.R) with control over parameter & initialisation.
+  * Added URL in description.
+  * Renamed data and data2 to ts.data1 and ts.data2.
+  * Forced type input to lowercase.
+
 Version 1.0
 	* First release.

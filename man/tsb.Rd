@@ -47,16 +47,17 @@ tsb(data,h=10,w=NULL,init=c("mean","naive"),
 }
 \references{
 Optimisation of the method described in:
-N. Kourentzes, 2014, International Journal of Production Economics. \url{http://dx.doi.org/10.1016/j.ijpe.2014.06.007}.
+N. Kourentzes, 2014, On intermittent demand model optimisation and selection, International Journal of Production Economics, 156: 180-190. \url{http://dx.doi.org/10.1016/j.ijpe.2014.06.007}.
+
 \url{http://kourentzes.com/forecasting/2014/06/11/on-intermittent-demand-model-optimisation-and-selection/}
 }
 \author{
 Nikolaos Kourentzes
 }
 \seealso{
-\code{\link{crost}}, \code{\link{crost.ma}}.
+\code{\link{crost}}, \code{\link{sexsm}}, \code{\link{crost.ma}}.
 }
 \examples{
-tsb(data,outplot=TRUE)
+tsb(ts.data1,outplot=TRUE)
 }
 \keyword{ ~tsb }

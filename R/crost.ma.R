@@ -30,18 +30,19 @@ crost.ma <- function(data,h=10,w=NULL,nop=c(2,1),type=c("croston","sba","sbj"),
 #   order       Moving averages orders for demand and interval.
 #
 # Example:
-#   crost.ma(data,outplot=TRUE)
+#   crost.ma(ts.data1,outplot=TRUE)
 # 
 # Notes:
 # Optimisation cost functions and properties described in:
-# N. Kourentzes, 2014, International Journal of Production Economics. 
+# N. Kourentzes, 2014, On intermittent demand model optimisation and selection, 
+# International Journal of Production Economics, 156: 180-190. 
 # http://dx.doi.org/10.1016/j.ijpe.2014.06.007
 # http://kourentzes.com/forecasting/2014/06/11/on-intermittent-demand-model-optimisation-and-selection/
 #
 # Nikolaos Kourentzes, 2014 <nikolaos@kourentzes.com>
 
   # Defaults
-  type <- type[1]
+  type <- tolower(type[1])
   cost <- cost[1]
   nop <- nop[1]
   outplot <- outplot[1]
@@ -117,7 +118,7 @@ crost.ma <- function(data,h=10,w=NULL,nop=c(2,1),type=c("croston","sba","sbj"),
 
 #-------------------------------------------------
 crost.ma.opt <- function(data,type=c("croston","sba","sbj"),
-                         cost=c("MAR","MSR","MAE","MSE"),nop=c(2,1),k){
+                         cost=c("mar","msr","mae","mse"),nop=c(2,1),k){
   
 # Optimisation function for Croston and variants
   

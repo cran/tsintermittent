@@ -35,11 +35,12 @@ tsb <- function(data,h=10,w=NULL,init=c("mean","naive"),
 #   initial     Initialisation values for demand and demand probability smoothing.
 #
 # Example:
-#   tsb(data,outplot=TRUE)
+#   tsb(ts.data1,outplot=TRUE)
 #
 # Notes:
 # Optimisation of the method described in:
-# N. Kourentzes, 2014, International Journal of Production Economics. 
+# N. Kourentzes, 2014, On intermittent demand model optimisation and selection, 
+# International Journal of Production Economics, 156: 180-190. 
 # http://dx.doi.org/10.1016/j.ijpe.2014.06.007
 # http://kourentzes.com/forecasting/2014/06/11/on-intermittent-demand-model-optimisation-and-selection/
 #  
@@ -139,7 +140,7 @@ tsb <- function(data,h=10,w=NULL,init=c("mean","naive"),
 }
 
 #-------------------------------------------------
-tsb.opt <- function(data,cost=c("MAR","MSR","MAE","MSE"),
+tsb.opt <- function(data,cost=c("mar","msr","mae","mse"),
                     init,init.opt=c(TRUE,FALSE)){
 # Optimisation function for TSB
   
