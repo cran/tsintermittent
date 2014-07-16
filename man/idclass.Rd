@@ -49,7 +49,7 @@ N. Kourentzes, 2014, On intermittent demand model optimisation and selection, In
 Nikolaos Kourentzes
 }
 \seealso{
-\code{\link{crost}},\code{\link{tsb}}.
+\code{\link{crost}}, \code{\link{tsb}}, \code{\link{imapa}}.
 }
 \examples{
 # Create/load some data. Each column is a time series

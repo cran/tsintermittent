@@ -1,8 +1,13 @@
-Version 1.1
+Version 1.2 (16 July 2014)
+  * Introduced imapa function for intermittent demand series.
+  * Added MAPA package dependency for temporal aggregation functions.
+  * Added parallel package dependency for imapa parallelisation.
+
+Version 1.1 (03 July 2014)
   * Added SES function (sexsm.R) with control over parameter & initialisation.
   * Added URL in description.
   * Renamed data and data2 to ts.data1 and ts.data2.
   * Forced type input to lowercase.
 
-Version 1.0
-	* First release.
+Version 1.0 (23 June 2014)
+  * First release.

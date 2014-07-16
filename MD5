@@ -1,9 +1,10 @@
-ee4dbbe773b5c6962358ab50122ce9aa *ChangeLog
-d08b8623ff491a586b5121bedea5c4ad *DESCRIPTION
-e46ce81cbcffd6d8c9d193de48481363 *NAMESPACE
+7d443ed92e9eaf034d331264b9f4fa87 *ChangeLog
+5e9c498039f028d628fd1a3aa1ce743e *DESCRIPTION
+bf2c170341574d1990a2f2af5e1ba7eb *NAMESPACE
 b6b228da6df60283d27d8210189931a4 *R/crost.R
 4dee5b73016625722a25c210558f1ccd *R/crost.ma.R
 500a4d5e8e1addd737ad54804355da4b *R/idclass.R
+b49a719e64f991a817087c0828e330df *R/imapa.R
 9e7f036580b7e4b9ebd12d637da9f2e8 *R/sexsm.R
 deae187eca026458c3e25fd5147b6d0a *R/simID.R
 23a5e92613a86240e13644bf6e5628f9 *R/tsb.R
@@ -11,7 +12,8 @@ de3a8c6a9cfb1255deb34daa781b5f99 *data/ts.data1.rda
 d0559ce6f6b5693adee148a10dd01a3b *data/ts.data2.rda
 945d0ce8f2b589a9c1e267c45033f5fc *man/crost.Rd
 3dd135edfd91465291de2f21ed1c80de *man/crost.ma.Rd
-05a9f66ac96b865931039e2c2b4417ef *man/idclass.Rd
+c93a5a52d1ccd033f14c0249efcbc507 *man/idclass.Rd
+c06ead381b9348183fec282b8202e5fb *man/imapa.Rd
 8ac9b10236d91a4bf5303737b0a37e63 *man/sexsm.Rd
 ac64fff210d6d01a3833db149ababa35 *man/simID.Rd
 c2fb9c132195801250f6e12708f2da3d *man/ts.data1.Rd

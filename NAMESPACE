@@ -1,2 +1,2 @@
-import()
-export(crost.ma,crost,idclass,simID,tsb,sexsm)
+import(MAPA,parallel)
+export(crost.ma,crost,idclass,simID,tsb,sexsm,imapa)
