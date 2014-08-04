@@ -21,8 +21,7 @@ tsb <- function(data,h=10,w=NULL,init=c("mean","naive"),
 #                 "msr" - Mean squared rate
 #                 "mae" - Mean absolute error
 #                 "mse" - Mean squared error
-#   init.opt    If parameters are optimised and init.opt==TRUE then initial values are 
-#               optimised as well. 
+#   init.opt    If init.opt==TRUE then initial values are optimised. 
 #   outplot     If TRUE a plot of the forecast is provided.
 #   opt.on      This is meant to use only by the optimisation function. When opt.on is 
 #               TRUE then no checks on inputs are performed. 
@@ -77,15 +76,17 @@ tsb <- function(data,h=10,w=NULL,init=c("mean","naive"),
   }
   
   # Optimise parameters if requested
-  if (is.null(w)){
-    wopt <- tsb.opt(data,cost,init,init.opt)
-    w <- wopt$w
-    init <- wopt$init
-  } else {
-    if (length(w)!=2){
-      stop(paste("w must be a vector of 2 elements: the smoothing parameter",
-                 " for the non-zero demand and the parameter for the ",
-                 "probability of demand.",sep=""))
+  if (opt.on == FALSE){
+    if (is.null(w) || init.opt == TRUE){
+      wopt <- tsb.opt(data,cost,w,init,init.opt)
+      w <- wopt$w
+      init <- wopt$init
+    } else {
+      if (length(w)!=2){
+        stop(paste("w must be a vector of 2 elements: the smoothing parameter",
+                   " for the non-zero demand and the parameter for the ",
+                   "probability of demand.",sep=""))
+      }
     }
   }
   
@@ -97,15 +98,13 @@ tsb <- function(data,h=10,w=NULL,init=c("mean","naive"),
   if (opt.on == FALSE){
     if (init[1]<0){
       stop("Initial demand cannot be a negative number.")
-    } else {
-      zfit[1] <- init[1]
-    }
+    } 
     if (init[2]<0){
       stop("Initial demand probability cannot be a negative number.")
-    } else {
-      pfit[1] <- init[2]
     }
   }
+  zfit[1] <- init[1]
+  pfit[1] <- init[2]
   
   # Fit model
   for (i in 2:n){
@@ -140,28 +139,39 @@ tsb <- function(data,h=10,w=NULL,init=c("mean","naive"),
 }
 
 #-------------------------------------------------
-tsb.opt <- function(data,cost=c("mar","msr","mae","mse"),
+tsb.opt <- function(data,cost=c("mar","msr","mae","mse"),w=NULL,
                     init,init.opt=c(TRUE,FALSE)){
 # Optimisation function for TSB
   
   cost <- cost[1]
   init.opt <- init.opt[1]
   
-  if (init.opt == TRUE){
-    w <- c(rep(0.05,2),init[1],init[2])
+  if (is.null(w) == TRUE && init.opt == TRUE){
+    # Optimise w and init
+    p0 <- c(rep(0.05,2),init[1],init[2])
     lbound <- c(0,0,0,0)
     ubound <- c(1,1,max(data),1)
-    wopt <- optim(par=w,tsb.cost,method="Nelder-Mead",data=data,cost=cost,
-                  init=init,init.opt=init.opt,lbound=lbound,ubound=ubound,
-                  control=list(maxit = 2000))$par
-  } else {
-    w <- c(rep(0.05,2))
+    wopt <- optim(par=p0,tsb.cost,method="Nelder-Mead",data=data,cost=cost,
+                  w=w,w.opt=is.null(w),init=init,init.opt=init.opt,
+                  lbound=lbound,ubound=ubound,control=list(maxit = 2000))$par
+  } else if (is.null(w) == TRUE && init.opt == FALSE){
+    # Optimise only w
+    p0 <- c(rep(0.05,2))
     lbound <- c(0,0)
     ubound <- c(1,1)
-    wopt <- optim(par=w,tsb.cost,method="Nelder-Mead",data=data,cost=cost,
-                  init=init,init.opt=init.opt,lbound=lbound,ubound=ubound,
-                  control=list(maxit = 2000))$par    
+    wopt <- optim(par=p0,tsb.cost,method="Nelder-Mead",data=data,cost=cost,
+                  w=w,w.opt=is.null(w),init=init,init.opt=init.opt,
+                  lbound=lbound,ubound=ubound,control=list(maxit = 2000))$par   
     wopt <- c(wopt,init)
+  } else if (is.null(w) == FALSE && init.opt == TRUE){
+    # Optimise only init
+    p0 <- c(init[1],init[2])
+    lbound <- c(0,0)
+    ubound <- c(max(data),1)
+    wopt <- optim(par=p0,tsb.cost,method="Nelder-Mead",data=data,cost=cost,
+                  w=w,w.opt=is.null(w),init=init,init.opt=init.opt,
+                  lbound=lbound,ubound=ubound,control=list(maxit = 2000))$par
+    wopt <- c(w,wopt)
   }
   
   return(list(w=wopt[1:2],init=wopt[3:4]))
@@ -169,13 +179,15 @@ tsb.opt <- function(data,cost=c("mar","msr","mae","mse"),
 }
 
 #-------------------------------------------------
-tsb.cost <- function(w,data,cost,init,init.opt,lbound,ubound){
+tsb.cost <- function(p0,data,cost,w,w.opt,init,init.opt,lbound,ubound){
   # Cost functions for TSB
   
-  if (init.opt==TRUE){
-    frc.in <- tsb(data=data,w=w[1:2],h=0,init=w[3:4],opt.on=TRUE)$frc.in
-  } else {
-    frc.in <- tsb(data=data,w=w[1:2],h=0,init=init,opt.on=TRUE)$frc.in
+  if (w.opt == TRUE && init.opt == TRUE){
+    frc.in <- tsb(data=data,w=p0[1:2],h=0,init=p0[3:4],opt.on=TRUE)$frc.in
+  } else if (w.opt == TRUE && init.opt == FALSE){
+    frc.in <- tsb(data=data,w=p0[1:2],h=0,init=init,opt.on=TRUE)$frc.in
+  } else if (w.opt == FALSE && init.opt == TRUE){
+    frc.in <- tsb(data=data,w=w,h=0,init=p0[1:2],opt.on=TRUE)$frc.in
   }
   
   if (cost == "mse"){
@@ -205,15 +217,17 @@ tsb.cost <- function(w,data,cost,init,init.opt,lbound,ubound){
   }
   
   # Bounds
-  for (i in 1:(2+2*init.opt)){
-    if (!w[i]>=lbound[i] | !w[i]<=ubound[i]){
+  for (i in 1:(2*w.opt+2*init.opt)){
+    if (!p0[i]>=lbound[i] | !p0[i]<=ubound[i]){
       E <- 9*10^99
     }
   }
   
   # Parameter of demand probability must be smaller than parameter of demand
-  if (w[1] < w[2]){
-    E <- 9*10^99
+  if (w.opt == TRUE){
+    if (p0[1] < p0[2]){
+      E <- 9*10^99
+    }
   }
   
   return(E)

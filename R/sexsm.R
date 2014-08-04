@@ -15,8 +15,7 @@ sexsm <- function(data,h=10,w=NULL,init=c("mean","naive"),cost=c("mar","msr","ma
 #                 "msr" - Mean squared rate
 #                 "mae" - Mean absolute error
 #                 "mse" - Mean squared error
-#   init.opt    If parameters are optimised and init.opt==TRUE then initial values are 
-#               optimised as well. 
+#   init.opt    If init.opt==TRUE then initial values are optimised. 
 #   outplot     If TRUE a plot of the forecast is provided.
 #   opt.on      This is meant to use only by the optimisation function. When opt.on is 
 #               TRUE then no checks on inputs are performed. 
@@ -62,19 +61,19 @@ sexsm <- function(data,h=10,w=NULL,init=c("mean","naive"),cost=c("mar","msr","ma
   }
   
   # Optimise parameters if requested
-  if (is.null(w)){
-    wopt <- sexsm.opt(data,cost,init,init.opt)
-    w <- wopt$w
-    init <- wopt$init
+  if (opt.on == FALSE){
+    if (is.null(w) || init.opt == TRUE){
+      wopt <- sexsm.opt(data,cost,w,init,init.opt)
+      w <- wopt$w
+      init <- wopt$init
+    }
   }
   
   # Pre-allocate memory
   fit <- vector("numeric",n+1)
   
   # Assign initial values and parameters
-  if (opt.on == FALSE){
-    fit[1] <- init[1]
-  }
+  fit[1] <- init[1]
   
   # Fit model
   for (i in 2:(n+1)){
@@ -106,28 +105,39 @@ sexsm <- function(data,h=10,w=NULL,init=c("mean","naive"),cost=c("mar","msr","ma
 }
 
 #-------------------------------------------------
-sexsm.opt <- function(data,cost=c("mar","msr","mae","mse"),
+sexsm.opt <- function(data,cost=c("mar","msr","mae","mse"),w=NULL,
                       init,init.opt=c(TRUE,FALSE)){
 # Optimisation function for SES
   
   cost <- cost[1]
   init.opt <- init.opt[1]  
   
-  if (init.opt == TRUE){
-    w <- c(0.5,init[1])
+  if (is.null(w) == TRUE && init.opt == TRUE){
+    # Optimise w and init
+    p0 <- c(0.5,init[1])
     lbound <- c(0,0)
     ubound <- c(1,max(data))
-    wopt <- optim(par=w,sexsm.cost,method="Nelder-Mead",data=data,cost=cost,
-                  init=init,init.opt=init.opt,lbound=lbound,ubound=ubound,
-                  control=list(maxit = 2000))$par
-  } else {
-    w <- 0.5
+    wopt <- optim(par=p0,sexsm.cost,data=data,cost=cost,w=w,w.opt=is.null(w),init=init,
+                  init.opt=init.opt,lbound=lbound,ubound=ubound,method="Nelder-Mead",
+                  control=list(maxit = 2000))$par  
+  } else if (is.null(w) == TRUE && init.opt == FALSE){
+    # Optimise only w
+    p0 <- 0.5
     lbound <- 0
     ubound <- 1
-    wopt <- optim(par=w,sexsm.cost,method="Brent",data=data,cost=cost,
-                  init=init,init.opt=init.opt,lower=lbound,upper=ubound,
-                  control=list(maxit = 2000))$par    
+    wopt <- optim(par=p0,sexsm.cost,data=data,cost=cost,w=w,w.opt=is.null(w),init=init,
+                  init.opt=init.opt,lbound=lbound,ubound=ubound,method="Brent",
+                  lower=lbound,upper=ubound,control=list(maxit = 2000))$par   
     wopt <- c(wopt,init)
+  } else if (is.null(w) == FALSE && init.opt == TRUE){
+    # Optimise only init
+    p0 <- init[1]
+    lbound <- 0
+    ubound <- max(data)
+    wopt <- optim(par=p0,sexsm.cost,data=data,cost=cost,w=w,w.opt=is.null(w),init=init,
+                  init.opt=init.opt,lbound=lbound,ubound=ubound,method="Brent",
+                  lower=lbound,upper=ubound,control=list(maxit = 2000))$par     
+    wopt <- c(w,wopt)
   }
   
   return(list(w=wopt[1],init=wopt[2]))
@@ -135,13 +145,15 @@ sexsm.opt <- function(data,cost=c("mar","msr","mae","mse"),
 }
 
 #-------------------------------------------------
-sexsm.cost <- function(w,data,cost,init,init.opt,lbound,ubound){
+sexsm.cost <- function(p0,data,w,w.opt,cost,init,init.opt,lbound,ubound){
 # Cost functions for SES
   
-  if (init.opt==TRUE){
-    frc.in <- sexsm(data=data,w=w[1],h=0,init=w[2],opt.on=TRUE)$frc.in
-  } else {
-    frc.in <- sexsm(data=data,w=w[1],h=0,init=init,opt.on=TRUE)$frc.in
+  if (w.opt == TRUE && init.opt == TRUE){
+    frc.in <- sexsm(data=data,w=p0[1],h=0,init=p0[2],opt.on=TRUE)$frc.in
+  } else if (w.opt == TRUE && init.opt == FALSE){
+    frc.in <- sexsm(data=data,w=p0[1],h=0,init=init,opt.on=TRUE)$frc.in
+  } else if (w.opt == FALSE && init.opt == TRUE){
+    frc.in <- sexsm(data=data,w=w,h=0,init=p0[1],opt.on=TRUE)$frc.in
   }
   
   if (cost == "mse"){
@@ -172,8 +184,8 @@ sexsm.cost <- function(w,data,cost,init,init.opt,lbound,ubound){
   
   # Constrains
   if (init.opt==TRUE){
-    for (i in 1:(1+1*init.opt)){
-      if (!(w[i]>=lbound[i]) | !(w[i]<=ubound[i])){
+    for (i in 1:(1*w.opt+1*init.opt)){
+      if (!(p0[i]>=lbound[i]) | !(p0[i]<=ubound[i])){
         E <- 9*10^99
       }
     }

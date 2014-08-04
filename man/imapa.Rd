@@ -7,7 +7,7 @@
 
 \usage{
 imapa(data,h=10,w=NULL,minimumAL=1,maximumAL=NULL,comb=c("mean","median"),
-      paral=c(0,1,2),outplot=c(0,1,2,3,4))
+      init.opt=c(TRUE,FALSE),paral=c(0,1,2),outplot=c(0,1,2,3,4),model.fit=NULL)
 }
 
 \arguments{
@@ -29,17 +29,24 @@ imapa(data,h=10,w=NULL,minimumAL=1,maximumAL=NULL,comb=c("mean","median"),
   \item{comb}{
     Combination operator. One of "mean" or "median". Default is "mean".
 }
+  \item{init.opt}{
+    If init.opt==TRUE then Croston and SBA initial values are optimised.
+}
   \item{paral}{
     Use parallel processing. 0 = no; 1 = yes (requires initialised cluster); 2 = yes and initialise cluster. Default is 0.
 }
   \item{outplot}{
     Optional plot: 0 = No plot; 1 = Time series and combined forecast; 2 = Time series and all aggregation level forecasts; 3 = Summary model selection plot; 4 = Detailed model selection plot.
 }
+  \item{model.fit}{
+    Optional input with model types and parameters. This is the model.fit output from this function. If used it overrides other model settings.
+}
 }
 \value{
 \item{frc.in}{In-sample demand rate.}
 \item{frc.out}{Out-of-sample demand rate.}
 \item{summary}{An array containing information for each aggregation level: AL - Aggregation level; n - Number of observations of aggregated series; p - Average inter-demand interval; cv2 - Coefficient of variation squared of non-zero demand; model - Selected model, where 1 is Croston, 2 is SBA and 3 is SES; use - If == 0 then this aggregation level is ignored because it contains less than 4 observations.}
+\item{model.fit}{Parameters and initialisation values of fitted model in each aggregation level.}
 }
 \references{
 Optimisation of the methods described in:

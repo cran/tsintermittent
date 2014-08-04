@@ -1,3 +1,11 @@
+Version 1.3 (04 August 2014)
+  * Corrected major optimisation bug - issue with opt.on in all crost, tsb and sexsm functions.
+  * Corrected bug in imapa function when maximumAL was very high.
+  * Corrected bugs in the legend of imapa function plots.
+  * Added option to optimise only initial values without parameters in crost, tsb and sexsm functions.
+  * Added init.opt option for imapa in the same way as it is for crost and tsb functions. This does not affect SES optimisation.
+  * Added option to use pre-fitted imapa models.
+
 Version 1.2 (16 July 2014)
   * Introduced imapa function for intermittent demand series.
   * Added MAPA package dependency for temporal aggregation functions.

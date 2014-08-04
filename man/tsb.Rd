@@ -29,7 +29,7 @@ tsb(data,h=10,w=NULL,init=c("mean","naive"),
     Cost function used for optimisation: 1. "mar" - Mean Absolute Rate; 2. "msr" - Mean Squared Rate; 3. "mae" - Mean Absolute Error; 4. "mse" - Mean Squared Error.
 }
   \item{init.opt}{
-    If parameters are optimised and init.opt==TRUE then initial values are optimised as well.
+    If init.opt==TRUE then initial values are optimised.
 }
   \item{outplot}{
     If TRUE a plot of the forecast is provided.
