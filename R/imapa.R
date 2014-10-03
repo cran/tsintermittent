@@ -60,6 +60,11 @@ imapa <- function(data,h=10,w=NULL,minimumAL=1,maximumAL=NULL,comb=c("mean","med
   init.opt <- init.opt[1]
   n <- length(data)
   
+  # Check number of non-zero values - need to have at least two
+  if (sum(data!=0)<2){
+    stop("Need at least two non-zero values to model time series.")
+  }
+  
   # Setup parallel processing if required
   if (paral == 2){
     crs <- detectCores()
@@ -85,11 +90,7 @@ imapa <- function(data,h=10,w=NULL,minimumAL=1,maximumAL=NULL,comb=c("mean","med
   
   # If no maximumAL find maximum interval
   if (is.null(maximumAL)){
-    # Perform Croston decomposition
-    nzd <- which(data != 0)                  # Find location on non-zero demand
-    k <- length(nzd)
-    x <- c(nzd[1],nzd[2:k]-nzd[1:(k-1)])     # Intervals
-    maximumAL <- max(x)
+    maximumAL <- floor(n/2)
   }
   
   # Check minimumAL and maximumAL
@@ -242,19 +243,31 @@ imapa.loop <- function(i,yaggr,minimumAL,w,w.in,init.opt,n,h,model.fit){
   ychartemp[1] <- minimumAL + i - 1
   ychartemp[2] <- length(ytemp)
   ychartemp[6] <- ychartemp[2]>=4
+  
+  # Check if at this aggregation level there are at least two non-zero observations
+  if (ychartemp[6]==1 && sum(ytemp!=0)<2){
+    ychartemp[6] <- 0
+  }
+  
   if (ychartemp[6]==1){
     if (!is.null(model.fit)){
       # Select prefit model
-      fit <- model.fit[,model.fit[1,]==i]
-      chartemp <- idclass(ytemp,type="PK",a.in=0.1,outplot="none")
-      ychartemp[5] <- fit[2]
+      fit <- model.fit[,i]
+      if (!is.na(fit[2])){
+        chartemp <- idclass(ytemp,type="PK",a.in=0.1,outplot="none")
+        ychartemp[3] <- chartemp$p
+        ychartemp[4] <- chartemp$cv2
+        ychartemp[5] <- fit[2]
+      } else {
+        ychartemp[6] = 0
+      }
     } else {
       # Identify model
       chartemp <- idclass(ytemp,type="PK",a.in=w.in,outplot="none")
+      ychartemp[3] <- chartemp$p
+      ychartemp[4] <- chartemp$cv2
       ychartemp[5] <- which(chartemp$summary==1)
     }
-    ychartemp[3] <- chartemp$p
-    ychartemp[4] <- chartemp$cv2
   }
   
   # Fit model and produce forecasts

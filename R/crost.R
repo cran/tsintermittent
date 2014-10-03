@@ -77,6 +77,11 @@ crost <- function(data,h=10,w=NULL,init=c("mean","naive"),nop=c(2,1),
   
   n <- length(data)
   
+  # Check number of non-zero values - need to have at least two
+  if (sum(data!=0)<2){
+    stop("Need at least two non-zero values to model time series.")
+  }
+  
   # Croston decomposition
   nzd <- which(data != 0)               # Find location on non-zero demand
   k <- length(nzd)

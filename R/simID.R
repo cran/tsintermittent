@@ -1,4 +1,4 @@
-simID <- function(n=1, obs=60, idi=2, cv2=1.5, level=NULL){
+simID <- function(n=1, obs=60, idi=2, cv2=0.5, level=NULL){
   # Simulator for Intermittent Demand Series
   #
   # Inputs:
