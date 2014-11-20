@@ -1,8 +1,8 @@
 Package: tsintermittent
 Type: Package
 Title: Intermittent Time Series Forecasting
-Version: 1.4
-Date: 2014-10-03
+Version: 1.5
+Date: 2014-11-20
 Author: Nikolaos Kourentzes and Fotios Petropoulos
 Maintainer: Nikolaos Kourentzes <n.kourentzes@lancaster.ac.uk>
 Description: This package contains functions for analysing and forecasting intermittent demand/slow moving items time series.
@@ -11,7 +11,7 @@ License: GPL (>= 2)
 Depends: MAPA, parallel
 URL:
         http://kourentzes.com/forecasting/2014/06/23/intermittent-demand-forecasting-package-for-r/
-Packaged: 2014-10-03 11:37:02 UTC; Nikos
+Packaged: 2014-11-20 12:48:16 UTC; Nikos
 NeedsCompilation: no
 Repository: CRAN
-Date/Publication: 2014-10-03 14:23:51
+Date/Publication: 2014-11-20 14:12:25

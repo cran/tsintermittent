@@ -57,7 +57,7 @@ crost.ma <- function(data,h=10,w=NULL,nop=c(2,1),type=c("croston","sba","sbj"),
   
   # Optimise parameters if requested
   if (is.null(w)){
-    w <- crost.ma.opt(data,type,cost,nop,k)
+    w <- crost.ma.opt(data,type,cost,nop,k-1)
   }
   
   # Assign parameters
@@ -145,12 +145,12 @@ crost.ma.opt <- function(data,type=c("croston","sba","sbj"),
     }
   }
   
-  wopt <- as.numeric(which(err==min(err),arr.ind=TRUE))
+  wopt <- as.numeric(which(err==min(err,na.rm=TRUE),arr.ind=TRUE))
   
   if (nop==1){
     wopt <- wopt[1]
   }
-  
+    
   return(wopt)
   
 }
