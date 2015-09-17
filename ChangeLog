@@ -1,3 +1,11 @@
+Version 1.7 (17 September 2015)
+  * Added function data.frc. This is a wrapper to forecast data frames with a single command.
+  * Added option to remove NA values in all forecasting methods. 
+  * simID now outputs different series as columns in a data frame. 
+
+Version 1.6 (17 February 2015)
+  * Added separate function crost.decomp for Croston decomposition.
+
 Version 1.5 (20 November 2014)
   * Corrected optimisation error in crost.ma. 
 

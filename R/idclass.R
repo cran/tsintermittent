@@ -45,7 +45,7 @@ idclass <- function(data,type=c("PKa","SBC","KHa","KH","PK"),a.in=NULL,
 #
 # Example:
 #   # Create/load some data. Each column is a time series
-#   dataset <- t(simID(100,60,idi=1.15,cv2=0.3))
+#   dataset <- simID(100,60,idi=1.15,cv2=0.3)
 #   idclass(dataset)
 #
 # Notes:

@@ -1,6 +1,7 @@
 crost <- function(data,h=10,w=NULL,init=c("mean","naive"),nop=c(2,1),
                   type=c("croston","sba","sbj"),cost=c("mar","msr","mae","mse"),
-                  init.opt=c(TRUE,FALSE),outplot=c(FALSE,TRUE),opt.on=c(FALSE,TRUE)){
+                  init.opt=c(TRUE,FALSE),outplot=c(FALSE,TRUE),opt.on=c(FALSE,TRUE),
+                  na.rm=c(FALSE,TRUE)){
 # Croston method and variants
 #
 # Inputs:
@@ -33,6 +34,7 @@ crost <- function(data,h=10,w=NULL,init=c("mean","naive"),nop=c(2,1),
 #   outplot     If TRUE a plot of the forecast is provided.
 #   opt.on      This is meant to use only by the optimisation function. When opt.on is 
 #               TRUE then no checks on inputs are performed. 
+#   na.rm       A logical value indicating whether NA values should be remove using the method.
 #
 # Outputs:
 #   model       Type of model fitted.
@@ -59,6 +61,7 @@ crost <- function(data,h=10,w=NULL,init=c("mean","naive"),nop=c(2,1),
   init.opt <- init.opt[1]
   outplot <- outplot[1]
   opt.on <- opt.on[1]
+  na.rm <- na.rm[1]
   if (!is.numeric(init)){
     init <- init[1]
   } else {
@@ -75,6 +78,13 @@ crost <- function(data,h=10,w=NULL,init=c("mean","naive"),nop=c(2,1),
     warning("nop can be either 1 or 2. Overriden to 2.")
   }
   
+  # Prepare data
+  if (class(data)=="data.frame"){
+    data <- data[[1]]
+  }
+  if (na.rm == TRUE){
+    data <- data[!is.na(data)]
+  }
   n <- length(data)
   
   # Check number of non-zero values - need to have at least two

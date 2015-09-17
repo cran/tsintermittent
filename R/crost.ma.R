@@ -1,5 +1,6 @@
 crost.ma <- function(data,h=10,w=NULL,nop=c(2,1),type=c("croston","sba","sbj"),
-                     cost=c("mar","msr","mae","mse"),outplot=c(FALSE,TRUE)){
+                     cost=c("mar","msr","mae","mse"),outplot=c(FALSE,TRUE),
+                     na.rm=c(FALSE,TRUE)){
 # Croston style moving averages and variants
 #
 # Inputs:
@@ -22,6 +23,7 @@ crost.ma <- function(data,h=10,w=NULL,nop=c(2,1),type=c("croston","sba","sbj"),
 #                 "mae" - Mean absolute error
 #                 "mse" - Mean squared error
 #   outplot     If TRUE a plot of the forecast is provided.
+#   na.rm       A logical value indicating whether NA values should be remove using the method.
 #
 # Outputs:
 #   model       Type of model fitted.
@@ -47,6 +49,13 @@ crost.ma <- function(data,h=10,w=NULL,nop=c(2,1),type=c("croston","sba","sbj"),
   nop <- nop[1]
   outplot <- outplot[1]
   
+  # Prepare data
+  if (class(data)=="data.frame"){
+    data <- data[[1]]
+  }
+  if (na.rm == TRUE){
+    data <- data[!is.na(data)]
+  }
   n <- length(data)
   
   # Croston decomposition

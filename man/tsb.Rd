@@ -9,7 +9,7 @@
 tsb(data,h=10,w=NULL,init=c("mean","naive"),
     cost=c("mar","msr","mae","mse"),
     init.opt=c(TRUE,FALSE),outplot=c(FALSE,TRUE),
-    opt.on=c(FALSE,TRUE))
+    opt.on=c(FALSE,TRUE),na.rm=c(FALSE,TRUE))
 }
 
 \arguments{
@@ -36,6 +36,9 @@ tsb(data,h=10,w=NULL,init=c("mean","naive"),
 }
   \item{opt.on}{
     This is meant to use only by the optimisation function. When opt.on is TRUE then no checks on inputs are performed.
+}
+  \item{na.rm}{
+    A logical value indicating whether NA values should be remove using the method.
 }
 }
 \value{

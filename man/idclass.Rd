@@ -37,7 +37,7 @@ idclass(data,type=c("PKa","SBC","KHa","KH","PK"),a.in=NULL,
 }
 \references{
 Classification schemes described in:
-F. Petropoulos and N. Kourentzes, 2014, Journal of Operational Research Society. \url{http://dx.doi.org/10.1057/jors.2014.62}.
+F. Petropoulos and N. Kourentzes, 2015, Journal of Operational Research Society. \url{http://www.palgrave-journals.com/jors/journal/v66/n6/full/jors201462a.html}.
 \url{http://kourentzes.com/forecasting/2014/05/13/forecast-combinations-for-intermittent-demand/}
 
 Optimisation of the methods described in:
@@ -53,7 +53,7 @@ Nikolaos Kourentzes
 }
 \examples{
 # Create/load some data. Each column is a time series
-dataset <- t(simID(100,60,idi=1.15,cv2=0.3))
+dataset <- simID(100,60,idi=1.15,cv2=0.3)
 idclass(dataset)
 }
 \keyword{ ~idclass ~crost ~croston ~tsb }

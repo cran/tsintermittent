@@ -7,7 +7,8 @@
 
 \usage{
 crost.ma(data,h=10,w=NULL,nop=c(2,1),type=c("croston","sba","sbj"),
-         cost=c("mar","msr","mae","mse"),outplot=c(FALSE,TRUE))
+         cost=c("mar","msr","mae","mse"),outplot=c(FALSE,TRUE),
+         na.rm=c(FALSE,TRUE))
 }
 
 \arguments{
@@ -31,6 +32,9 @@ crost.ma(data,h=10,w=NULL,nop=c(2,1),type=c("croston","sba","sbj"),
 }
   \item{outplot}{
     If TRUE a plot of the forecast is provided.
+}
+  \item{na.rm}{
+    A logical value indicating whether NA values should be remove using the method.
 }
 }
 \value{

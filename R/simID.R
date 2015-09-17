@@ -9,7 +9,7 @@ simID <- function(n=1, obs=60, idi=2, cv2=0.5, level=NULL){
   #   level       Mean level of the non-zero demands. If NULL, then a random level in [10,100] is selected.
   #
   # Outputs:
-  #   series       A two-dimensional array containing all the generated series.
+  #   series       A data matrix containing all the generated series.
   #
   # Example:
   #   dataset <- t(simID(100,60,idi=1.15,cv2=0.3))
@@ -22,7 +22,7 @@ simID <- function(n=1, obs=60, idi=2, cv2=0.5, level=NULL){
   #
   # Fotios Petropoulos, 2014 <fotpetr@gmail.com>
 
-  series <- array(NA, c(n, obs))
+  series <- array(NA, c(obs, n))
   
   for (tsi in 1:n){
     if (is.null(level)){
@@ -39,8 +39,12 @@ simID <- function(n=1, obs=60, idi=2, cv2=0.5, level=NULL){
       x <- rbinom(obs,1,1/idi) * round(m+1) # rbern(obs, 1/idi) replaced by binomial
     }
     
-    series[tsi, ] <- x
+    series[, tsi] <- x
   }
+  
+  # Convert series to data.frame
+  colnames(series) <- paste("ts",1:n)
+  series <- data.frame(series)
   
   return(series)
   

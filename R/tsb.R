@@ -1,7 +1,7 @@
 tsb <- function(data,h=10,w=NULL,init=c("mean","naive"),
                 cost=c("mar","msr","mae","mse"),
                 init.opt=c(TRUE,FALSE),outplot=c(FALSE,TRUE),
-                opt.on=c(FALSE,TRUE)){
+                opt.on=c(FALSE,TRUE),na.rm=c(FALSE,TRUE)){
 # TSB method
 #
 # Inputs:
@@ -25,6 +25,7 @@ tsb <- function(data,h=10,w=NULL,init=c("mean","naive"),
 #   outplot     If TRUE a plot of the forecast is provided.
 #   opt.on      This is meant to use only by the optimisation function. When opt.on is 
 #               TRUE then no checks on inputs are performed. 
+#   na.rm       A logical value indicating whether NA values should be remove using the method.  
 #
 # Outputs:
 #   model       Type of model fitted.
@@ -60,6 +61,13 @@ tsb <- function(data,h=10,w=NULL,init=c("mean","naive"),
     }
   }
   
+  # Prepare data
+  if (class(data)=="data.frame"){
+    data <- data[[1]]
+  }
+  if (na.rm == TRUE){
+    data <- data[!is.na(data)]
+  }
   n <- length(data)
   
   # TSB decomposition

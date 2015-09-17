@@ -10,7 +10,7 @@ library(parallel, quietly=TRUE)  # Needed for parallel
 
 imapa <- function(data,h=10,w=NULL,minimumAL=1,maximumAL=NULL,comb=c("mean","median"),
                   init.opt=c(TRUE,FALSE),paral=c(0,1,2),outplot=c(0,1,2,3,4),
-                  model.fit=NULL){
+                  model.fit=NULL,na.rm=c(FALSE,TRUE)){
 # MAPA for intermittent demand data
 #
 # Inputs
@@ -34,6 +34,7 @@ imapa <- function(data,h=10,w=NULL,minimumAL=1,maximumAL=NULL,comb=c("mean","med
 #                 4 - Detailed model selection plot
 #   model.fit   Optional input with model types and parameters. This is the model.fit 
 #               output from this function. If used it overrides other model settings.
+#   na.rm       A logical value indicating whether NA values should be remove using the method.    
 #
 # Outputs
 #   frc.in      In-sample demand rate. 
@@ -58,6 +59,14 @@ imapa <- function(data,h=10,w=NULL,minimumAL=1,maximumAL=NULL,comb=c("mean","med
   paral <- paral[1]
   outplot <- outplot[1]
   init.opt <- init.opt[1]
+
+  # Prepare data
+  if (class(data)=="data.frame"){
+    data <- data[[1]]
+  }
+  if (na.rm == TRUE){
+    data <- data[!is.na(data)]
+  }
   n <- length(data)
   
   # Check number of non-zero values - need to have at least two

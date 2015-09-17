@@ -7,7 +7,8 @@
 
 \usage{
 imapa(data,h=10,w=NULL,minimumAL=1,maximumAL=NULL,comb=c("mean","median"),
-      init.opt=c(TRUE,FALSE),paral=c(0,1,2),outplot=c(0,1,2,3,4),model.fit=NULL)
+      init.opt=c(TRUE,FALSE),paral=c(0,1,2),outplot=c(0,1,2,3,4),model.fit=NULL,
+      na.rm=c(FALSE,TRUE))
 }
 
 \arguments{
@@ -41,6 +42,9 @@ imapa(data,h=10,w=NULL,minimumAL=1,maximumAL=NULL,comb=c("mean","median"),
   \item{model.fit}{
     Optional input with model types and parameters. This is the model.fit output from this function. If used it overrides other model settings.
 }
+  \item{na.rm}{
+    A logical value indicating whether NA values should be remove using the method.
+}
 }
 \value{
 \item{frc.in}{In-sample demand rate.}
@@ -50,7 +54,7 @@ imapa(data,h=10,w=NULL,minimumAL=1,maximumAL=NULL,comb=c("mean","median"),
 }
 \references{
 Optimisation of the methods described in:
-F. Petropoulos and N. Kourentzes, 2014, Forecast Combinations for Intermittent Demand, Journal of Operational Research Society. \url{http://dx.doi.org/10.1057/jors.2014.62}.
+F. Petropoulos and N. Kourentzes, 2015, Forecast Combinations for Intermittent Demand, Journal of Operational Research Society. \url{http://www.palgrave-journals.com/jors/journal/v66/n6/full/jors201462a.html}.
 
 \url{http://kourentzes.com/forecasting/2014/05/13/forecast-combinations-for-intermittent-demand/}
 }

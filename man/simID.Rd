@@ -27,7 +27,7 @@ simID(n=1, obs=60, idi=2, cv2=0.5, level=NULL)
 }
 }
 \value{
-\item{series}{A two-dimensional array containing all the generated series.}
+\item{series}{A data matrix containing all the generated series.}
 }
 \references{
 This simulator assumes that non-zero demand arrivals follow a bernoulli distribution and the non-zero demands a negative binomial distribution.
