@@ -1,3 +1,9 @@
+Version 1.8 (23 September 2015)
+  * Added "auto" method in data.frc. This selected and uses Croston, SBA and SES automatically for each time series, based on PKa classification (idclass function). 
+  * Changed classification to PKa instead of PK with prespecified alpha for imapa. Note that data.frc with method="auto" and imapa with maximumAL=1 give the same results, but the data.frc is faster. Use imapa when temporal aggregation is desirable. 
+  * Added check on crost.decomp and idclass when input is a data frame.
+  * Added warning on functions that handle single time series when data frames with more that a single column are used as inputs.
+
 Version 1.7 (17 September 2015)
   * Added function data.frc. This is a wrapper to forecast data frames with a single command.
   * Added option to remove NA values in all forecasting methods. 

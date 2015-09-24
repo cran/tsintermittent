@@ -80,6 +80,9 @@ crost <- function(data,h=10,w=NULL,init=c("mean","naive"),nop=c(2,1),
   
   # Prepare data
   if (class(data)=="data.frame"){
+    if (ncol(data)>1){
+      warning("Data frame with more than one columns. Using only first one.")
+    }
     data <- data[[1]]
   }
   if (na.rm == TRUE){

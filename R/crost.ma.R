@@ -48,9 +48,13 @@ crost.ma <- function(data,h=10,w=NULL,nop=c(2,1),type=c("croston","sba","sbj"),
   cost <- cost[1]
   nop <- nop[1]
   outplot <- outplot[1]
+  na.rm <- na.rm[1]
   
   # Prepare data
   if (class(data)=="data.frame"){
+    if (ncol(data)>1){
+      warning("Data frame with more than one columns. Using only first one.")
+    }
     data <- data[[1]]
   }
   if (na.rm == TRUE){

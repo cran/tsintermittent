@@ -59,9 +59,13 @@ imapa <- function(data,h=10,w=NULL,minimumAL=1,maximumAL=NULL,comb=c("mean","med
   paral <- paral[1]
   outplot <- outplot[1]
   init.opt <- init.opt[1]
+  na.rm <- na.rm[1]
 
   # Prepare data
   if (class(data)=="data.frame"){
+    if (ncol(data)>1){
+      warning("Data frame with more than one columns. Using only first one.")
+    }
     data <- data[[1]]
   }
   if (na.rm == TRUE){
@@ -263,7 +267,8 @@ imapa.loop <- function(i,yaggr,minimumAL,w,w.in,init.opt,n,h,model.fit){
       # Select prefit model
       fit <- model.fit[,i]
       if (!is.na(fit[2])){
-        chartemp <- idclass(ytemp,type="PK",a.in=0.1,outplot="none")
+        # chartemp <- idclass(ytemp,type="PK",a.in=0.1,outplot="none")
+        chartemp <- idclass(ytemp,type="PKa",a.in=0.1,outplot="none")
         ychartemp[3] <- chartemp$p
         ychartemp[4] <- chartemp$cv2
         ychartemp[5] <- fit[2]
@@ -272,7 +277,8 @@ imapa.loop <- function(i,yaggr,minimumAL,w,w.in,init.opt,n,h,model.fit){
       }
     } else {
       # Identify model
-      chartemp <- idclass(ytemp,type="PK",a.in=w.in,outplot="none")
+      # chartemp <- idclass(ytemp,type="PK",a.in=w.in,outplot="none")
+      chartemp <- idclass(ytemp,type="PKa",a.in=w.in,outplot="none")
       ychartemp[3] <- chartemp$p
       ychartemp[4] <- chartemp$cv2
       ychartemp[5] <- which(chartemp$summary==1)

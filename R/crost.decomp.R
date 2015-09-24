@@ -23,6 +23,13 @@ crost.decomp <- function(data,init=c("naive","mean")){
   # Defaults
   init <- init[1]
   
+  if (class(data) == "data.frame"){
+    if (ncol(data)>1){
+      warning("Data frame with more than one columns. Using only first one.")
+    }
+    data <- data[[1]]
+  }
+    
   n <- length(data)
   
   # Check number of non-zero values - need to have at least two
