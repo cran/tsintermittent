@@ -1,3 +1,7 @@
+Version 1.9 (10 March 2016)
+  * Provide vectors of non-zero demand and intervals for crost.R and crost.ma.R.
+  * Change the variable name of demand rate in crost.ma.R to "cc"
+  
 Version 1.8 (23 September 2015)
   * Added "auto" method in data.frc. This selected and uses Croston, SBA and SES automatically for each time series, based on PKa classification (idclass function). 
   * Changed classification to PKa instead of PK with prespecified alpha for imapa. Note that data.frc with method="auto" and imapa with maximumAL=1 give the same results, but the data.frc is faster. Use imapa when temporal aggregation is desirable. 

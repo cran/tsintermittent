@@ -30,6 +30,9 @@ crost.ma <- function(data,h=10,w=NULL,nop=c(2,1),type=c("croston","sba","sbj"),
 #   frc.in      In-sample demand rate. 
 #   frc.out     Out-of-sample demand rate.
 #   order       Moving averages orders for demand and interval.
+#   component   List of c.in and c.out containing the non-zero demand and interval vectors for 
+#               in- and out-of-sample respectively. Third element is the coefficient used to scale
+#               demand rate for sba and sbj.
 #
 # Example:
 #   crost.ma(ts.data1,outplot=TRUE)
@@ -96,23 +99,26 @@ crost.ma <- function(data,h=10,w=NULL,nop=c(2,1),type=c("croston","sba","sbj"),
   zfit <- c(rep(NA,k.demand-1),zfit[!is.na(zfit)])
   xfit <- filter(x,rep(1/k.interval,k.interval),sides=2)
   xfit <- c(rep(NA,k.interval-1),xfit[!is.na(xfit)])
-  c <- coeff * zfit/xfit
+  cc <- coeff * zfit/xfit
   
   # Calculate in-sample demand rate
-  frc.in <- vector("numeric",n)
-  frc.in[] <- NA
+  frc.in <- x.in <- z.in <- rep(NA,n)
   tv <- c(nzd+1,n)  # Time vector used to create frc.in forecasts
   for (i in 1:k){
     if (tv[i]<=n){
-      frc.in[tv[i]:min(c(tv[i+1],n))] <- c[i]
+      frc.in[tv[i]:min(c(tv[i+1],n))] <- cc[i]
+      x.in[tv[i]:min(c(tv[i+1],n))] <- xfit[i]
+      z.in[tv[i]:min(c(tv[i+1],n))] <- zfit[i]
     }
   }
   
   # Forecast out-of-sample demand rate
   if (h>0){
-    frc.out <- rep(c[k],h)
+    frc.out <- rep(cc[k],h)
+    x.out <- rep(xfit[k],h)
+    z.out <- rep(zfit[k],h)
   } else {
-    frc.out = NULL
+    frc.out <- x.out <- z.out <- NULL
   }
   
   # Plot
@@ -124,8 +130,18 @@ crost.ma <- function(data,h=10,w=NULL,nop=c(2,1),type=c("croston","sba","sbj"),
     lines((n+1):(n+h),frc.out,col="red",lwd=2)
   }
   
+  # Prepare demand and interval vectors for output
+  c.in <- array(cbind(z.in,x.in),c(n,2),dimnames=list(NULL,c("Demand","Interval")))
+  if (h>0){
+    c.out <- array(cbind(z.out,x.out),c(h,2),dimnames=list(NULL,c("Demand","Interval")))
+  } else {
+    c.out <- NULL
+  }
+  c.coeff <- coeff
+  comp <- list(c.in=c.in,c.out=c.out,coeff=coeff)
+  
   return(list(model=paste("ma.",type,sep=""),frc.in=as.numeric(frc.in),
-              frc.out=frc.out,order=c(k.demand,k.interval)))
+              frc.out=frc.out,order=c(k.demand,k.interval),components=comp))
   
 }
 

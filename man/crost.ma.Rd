@@ -42,6 +42,7 @@ crost.ma(data,h=10,w=NULL,nop=c(2,1),type=c("croston","sba","sbj"),
 \item{frc.in}{In-sample demand rate.}
 \item{frc.out}{Out-of-sample demand rate.}
 \item{order}{Moving averages orders for demand and interval.}
+\item{component}{List of c.in and c.out containing the non-zero demand and interval vectors for in- and out-of-sample respectively. Third element is the coefficient used to scale demand rate for sba and sbj.}
 }
 \references{
 Optimisation cost functions described in:

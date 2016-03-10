@@ -42,6 +42,9 @@ crost <- function(data,h=10,w=NULL,init=c("mean","naive"),nop=c(2,1),
 #   frc.out     Out-of-sample demand rate.
 #   weights     Smoothing parameters for demand and interval.
 #   initial     Initialisation values for demand and interval smoothing.
+#   component   List of c.in and c.out containing the non-zero demand and interval vectors for 
+#               in- and out-of-sample respectively. Third element is the coefficient used to scale
+#               demand rate for sba and sbj.
 #
 # Example:
 #   crost(ts.data1,outplot=TRUE)
@@ -122,7 +125,6 @@ crost <- function(data,h=10,w=NULL,init=c("mean","naive"),nop=c(2,1),
   # Pre-allocate memory
   zfit <- vector("numeric",k)
   xfit <- vector("numeric",k)
-  c <- vector("numeric",k)
   
   # Assign initial values and parameters
   if (opt.on == FALSE){
@@ -161,20 +163,23 @@ crost <- function(data,h=10,w=NULL,init=c("mean","naive"),nop=c(2,1),
   cc <- coeff * zfit/xfit
   
   # Calculate in-sample demand rate
-  frc.in <- vector("numeric",n)
-  frc.in[] <- NA
+  frc.in <- x.in <- z.in <- rep(NA,n)
   tv <- c(nzd+1,n)  # Time vector used to create frc.in forecasts
   for (i in 1:k){
     if (tv[i]<=n){
       frc.in[tv[i]:min(c(tv[i+1],n))] <- cc[i]
+      x.in[tv[i]:min(c(tv[i+1],n))] <- xfit[i]
+      z.in[tv[i]:min(c(tv[i+1],n))] <- zfit[i]
     }
   }
   
   # Forecast out-of-sample demand rate
   if (h>0){
     frc.out <- rep(cc[k],h)
+    x.out <- rep(xfit[k],h)
+    z.out <- rep(zfit[k],h)
   } else {
-    frc.out = NULL
+    frc.out <- x.out <- z.out <- NULL
   }
   
   # Plot
@@ -190,9 +195,19 @@ crost <- function(data,h=10,w=NULL,init=c("mean","naive"),nop=c(2,1),
   if (length(w)==1){
     w <- c(w,w)
   }
+
+  # Prepare demand and interval vectors for output
+  c.in <- array(cbind(z.in,x.in),c(n,2),dimnames=list(NULL,c("Demand","Interval")))
+  if (h>0){
+    c.out <- array(cbind(z.out,x.out),c(h,2),dimnames=list(NULL,c("Demand","Interval")))
+  } else {
+    c.out <- NULL
+  }
+  c.coeff <- coeff
+  comp <- list(c.in=c.in,c.out=c.out,coeff=coeff)
   
   return(list(model=type,frc.in=frc.in,frc.out=frc.out,
-              weights=w,initial=c(zfit[1],xfit[1])))
+              weights=w,initial=c(zfit[1],xfit[1]),components=comp))
 
 }
 
