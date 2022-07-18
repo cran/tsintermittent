@@ -1,17 +1,22 @@
 Package: tsintermittent
 Type: Package
 Title: Intermittent Time Series Forecasting
-Version: 1.9
-Date: 2016-03-10
-Author: Nikolaos Kourentzes and Fotios Petropoulos
-Maintainer: Nikolaos Kourentzes <n.kourentzes@lancaster.ac.uk>
-Description: Functions for analysing and forecasting intermittent demand/slow moving items time series.
+Version: 1.10
+Date: 2022-07-15
+Authors@R: c(
+    person("Nikolaos", "Kourentzes", email = "nikolaos@kourentzes.com", role = c("cre","aut"), comment = c(ORCID = "0000-0003-0211-5218")),
+    person("Fotios", "Petropoulos", email = "F.Petropoulos@bath.ac.uk", role = "ctb", comment = c(ORCID = "0000-0003-3039-4955")))
+Description: Time series methods for intermittent demand forecasting. Includes Croston's method and its variants (Moving Average, SBA), and the TSB method. Users can obtain optimal parameters on a variety of loss functions, or use fixed ones (Kourenztes (2014) <doi:10.1016/j.ijpe.2014.06.007>). Intermittent time series classification methods and iMAPA that uses multiple temporal aggregation levels are also provided (Petropoulos & Kourenztes (2015) <doi:10.1057/jors.2014.62>).
 LazyData: yes
 License: GPL (>= 2)
-Depends: MAPA, parallel
+Imports: MAPA, parallel
 URL:
-        http://kourentzes.com/forecasting/2014/06/23/intermittent-demand-forecasting-package-for-r/
+        https://kourentzes.com/forecasting/2014/06/23/intermittent-demand-forecasting-package-for-r/
 NeedsCompilation: no
-Packaged: 2016-03-10 21:36:33 UTC; Nikos
+Packaged: 2022-07-17 10:15:29 UTC; Nikos
+Author: Nikolaos Kourentzes [cre, aut]
+    (<https://orcid.org/0000-0003-0211-5218>),
+  Fotios Petropoulos [ctb] (<https://orcid.org/0000-0003-3039-4955>)
+Maintainer: Nikolaos Kourentzes <nikolaos@kourentzes.com>
 Repository: CRAN
-Date/Publication: 2016-03-10 23:32:20
+Date/Publication: 2022-07-18 08:10:05 UTC

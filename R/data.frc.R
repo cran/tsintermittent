@@ -40,7 +40,6 @@ data.frc <- function(data.in,method=c("crost","crost.ma","tsb","sexsm","imapa","
          "imapa" = {out <- apply(data.in,2,imapa,...)},
          "auto" = # Select between Croston, SBA and SES
            {
-             out <- vector("list",sum(cls$summary))
              # Distribute elipse (...) inputs to each method
              dots <- list(...)
              valid.crost <- c("h","w","init","nop","cost","init.opt","outplot","na.rm")
@@ -49,13 +48,15 @@ data.frc <- function(data.in,method=c("crost","crost.ma","tsb","sexsm","imapa","
              dots.sexsm <- dots[names(dots) %in% valid.sexsm]
              # Perform classification
              cls <- idclass(data.in,type="PKa",outplot="none")
+             out <- vector("list",sum(cls$summary))
+             browser()
              # Forecast
              if (length(cls$idx.croston)>=1){
                # out.croston <- apply(data.in[,cls$idx.croston],2,do.call(crost,c(list(type="croston"),dots.crost)))
                out.croston <- do.call(function(...){apply(data.in[,cls$idx.croston],2,crost,...)}, c(list(type="crost"),dots.crost))
                out[cls$idx.croston] <- out.croston
              } else {
-               out.croston <- NULout.croston <- do.call(function(...){apply(data.in[,cls$idx.croston],2,crost,...)}, c(list(type="sba"),dots.crost))
+               out.croston <- NULL
              }
              if (length(cls$idx.sba)>=1){
                # out.sba <- apply(data.in[,cls$idx.sba],2,crost,type="sba",dots.crost) 
